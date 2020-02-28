@@ -28,9 +28,10 @@ public class CartController {
     }
 
     //метод показывающий Корзину, т.е. показывает товар в Корзине
+    //вернее items
     @GetMapping("")
     public String showCart(Model model) {
-        model.addAttribute("products", cart.getProducts());
+        model.addAttribute("items", cart.getItems());
         return "cart";
     }
 }
