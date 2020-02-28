@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <meta charset="utf-8"/>
+
+    <title>Application</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+<!-- В <span> мы хотим видеть информацию о продукте. -->
+<div class="container">
+    <div th:replace="~{navigation :: navigation(Shop)}"/>
+    <h1>Shop</h1>
+    <!-- <span th:text="${prod.id + ' ' + prod.title + ' ' + prod.price}"/> -->
+
+    <!-- Напишем условие, когда покажем "Products List is empty."
+        th:if="${products.size()==0}"
+        а если th:if="${products.size()>0}" то покажем таблицу.-->
+    <span th:if="${products.size()==0}">Products List is empty.</span>
+    <table th:if="${products.size()>0}" class="table table-hover">
+        <!-- Далее идет заголовок таблицы -->
+        <thead class="thead-dark">
+        <!--
+        В этом заголовке есть одна строка, в ней прописываем названия колонок
+        т.е это шапка таблицы. <th> - выделяет у таблицы шапку. делаем ее темной "thead-dark"
+        -->
+        <tr>
+            <th>ID</th>
+            <th>Title</th>
+            <th>Price</th>
+            <th>Details</th>
+            <th>Add to Cart</th>
+            <th sec:authorize="hasRole('ADMIN')">Delete</th>
+        </tr>
+        </thead>
+        <!-- Далее описываем тело таблицы. -->
+        <tbody>
+        <!-- Снова обращаемся к шаблонизатору Thymeleaf (в коде это префикс th:),
+        с его помощью мы работаем с java-объектами, как будто они здесь в html
+        прописаны, а также он может запускать циклы и другие полезные вещи.
+        Код ниже говорит, что используем таймлиф и его цикл foreach. С его помощью
+        мы перебираем продукты из объекта, который называется products.
+        Из метода Контроллера shopPage прилетают все продукты под именем "products"
+        и мы их перебираем. И для каждого продукта будет сформированна своя строка.-->
+        <tr th:each="product : ${products}">
+            <!-- В каждой строке нам нужно три столбца id, title, price или другое количество
+             в зависимости от условий.-->
+            <td th:text="${product.id}"/>
+            <td th:text="${product.title}"/>
+            <td th:text="${product.price}"/>
+            <td><a class="btn btn-secondary" th:href="@{'details/' + ${product.id}}">Details info</a></td>
+            <td><a class="btn btn-success" th:href="@{'/cart/add/' + ${product.id}}">Add to Cart</a></td>
+            <td sec:authorize="hasRole('ADMIN')"><a class="btn btn-danger" th:href="@{'products/delete/' + ${product.id}}">Delete product</a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
