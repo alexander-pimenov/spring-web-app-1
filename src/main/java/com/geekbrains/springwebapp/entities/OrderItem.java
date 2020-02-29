@@ -2,6 +2,7 @@ package com.geekbrains.springwebapp.entities;
 
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * Создали класс OrderItem
@@ -11,6 +12,9 @@ import javax.persistence.*;
 @Entity
 @Table(name = "order_items")
 public class OrderItem {
+
+    //private static final long serialVersionUID = -1587797388552932937L;
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
