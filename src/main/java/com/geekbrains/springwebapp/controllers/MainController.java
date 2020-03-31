@@ -82,13 +82,22 @@ public class MainController {
     }
 
     /*  Метод может отвечать не только страницей, но и чистым текстом.
-        Указываем аннотацию @ResponseBode и на запрос /"data" будет являться
-        обычная строка.*/
+        Указываем аннотацию @ResponseBode и на GET запрос /"data" будет являться
+        обычная строка.
+        @RequestParam показывает на то, что от Пользователя ожидается, что в
+        url-ке будет несколько параметров. В нашем случае их два.
+        Параметр имеет имя value="serial" и value="number"
+        Они должны быть прописаны в GET-запросе:
+        localhost:8189/app/data?serial=10&number=100
+        Если поставить required = false, то этот параметр можем не писать,
+        если required = true или он опущен, а мы не напишем значение параметра,
+        то получим сообщение об ошибке.*/
     @GetMapping("/data")
     @ResponseBody
     //Если мы укажем required=false, то это будет значит,
     //что параметр не является обязательным, т.е. он может быть, а может и не быть.
-    public String dataExample(@RequestParam(value = "serial", required = false) Long serial, @RequestParam("number") Long number) {
+    public String dataExample(@RequestParam(value = "serial", required = false) Long serial,
+                              @RequestParam("number") Long number) {
         return "S/N: " + serial + " / " + number;
     }
 }
